@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-github repo manager
+github repo manager for browsers, not for developers.
 
 !+ with UI, so user can easily look through these repos +!
 
@@ -57,6 +57,7 @@ github repo manager
 """
 
 import os
+import csv
 import inspect
 
 file_path = os.path.abspath(inspect.getsourcefile(lambda: 0))
@@ -72,17 +73,38 @@ v_github_password = ""
 # ---------------------------------------------------------------------------
 # dat
 
-def load_repo_basic_dat():
+def load_repo_basic_csv():
     """
         load basic repo info from disk
-
         file name: "_repo_baisc.csv", under same dir with script file.
         this file is exported by _git.xlsx, things we gathered manually.
+
+        @return: list : a list of repo urls
+               : None :
     """
-    pass
+    file_path = os.path.join(file_dir, "_repo_baisc.csv")
+    if os.path.exists(file_path):
+        try:
+            file = open(file_path, "r")
+        except:
+            print "open _repo_baisc.csv fail!"
+            return None
+        else:
+            lines = csv.reader(file)
+            for line in lines:
+                assert len(line) == 2
+                print "url: %s" % line[1]
+
+            file.close()
+            return []
+    else:
+        print "_repo_basic.csv not found!"
+        return None
 
 
-def save_repo_basic_dat():
+def save_repo_basic_csv():
+    """
+    """
     pass
 
 
@@ -133,7 +155,8 @@ def diff_repo_csv_disk():
 
 if __name__ == "__main__":
 
-    load_repo_disk()
+    # load_repo_disk()
+    load_repo_basic_csv()
     exit(1)
 
     from github import Github
